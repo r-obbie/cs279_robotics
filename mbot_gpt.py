@@ -1,8 +1,7 @@
+import event, time, cyberpi, mbot2
 from openai import OpenAI
 
 client = OpenAI(api_key="api_key")
-
-import event, time, cyberpi, mbot2
 
 # initialise speech recognition
 cyberpi.speech.set_recognition_address(url = "{NAVIGATEURL}")
@@ -44,5 +43,5 @@ def answer_question(text):
             {"role": "user", "content": f"Answer this question: {text}"}
         ]
     )
-    simplified_text = response.choices[0].message.content
-    return simplified_text
+    answer = response.choices[0].message.content
+    return answer
