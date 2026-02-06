@@ -1,3 +1,7 @@
+from openai import OpenAI
+
+client = OpenAI(api_key="api_key")
+
 import event, time, cyberpi, mbot2
 
 # initialise speech recognition
@@ -29,4 +33,16 @@ def is_btn_press1():
 
 # convert recognised speech commands into tts commands for the robot
 def text_to_speech(speech_result):
-    cyberpi.cloud.tts('en', speech_result)
+    ans = answer_question(speech_result)
+    cyberpi.cloud.tts('en', ans)
+
+# use gpt to answer the question
+def answer_question(text):
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "user", "content": f"Answer this question: {text}"}
+        ]
+    )
+    simplified_text = response.choices[0].message.content
+    return simplified_text
